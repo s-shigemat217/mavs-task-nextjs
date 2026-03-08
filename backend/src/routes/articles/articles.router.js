@@ -1,20 +1,93 @@
-import articleService from '../../services/articles/ArticleService.js';
-import express from 'express';
-import authenticate from '../../middleware/authenticate.js';
+import express from "express";
+import ArticleService from "../../services/articles/ArticleService.js";
+
+import authenticate from "../../middleware/authenticate.js";
 
 const router = express.Router();
+const articleService = new ArticleService();
+
+/**
+ * 記事一覧取得
+ */
+router.get("/", async (req, res) => {
+  try {
+    // const user_id = req.user.id;
+    const user_id = 1; // 仮
+    const articleList = await articleService.getArticleList(user_id);
+
+    res.status(200).json(articleList);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({});
+  }
+});
+
+// 記事情報取得
+router.get("/:id", async (req, res) => {
+  try {
+    // const user_id = req.query.user_id;
+    const user_id = 1;
+    const article_id = req.params.id;
+
+    const article = await articleService.getArticle(user_id, article_id);
+
+    res.json(article);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server error" });
+  }
+});
 
 /**
  * メモ新規登録
  */
-router.get('/createArticle', authenticate, async (req, res, next) => {
+router.post("/", async (req, res) => {
   try {
-    let body = {};
+    const user_id = 1; // 仮
+    const { title, content } = req.body;
 
-    res.status(200).json(body);
+    const article = await articleService.createArticle(user_id, title, content);
+
+    res.status(200).json(article);
   } catch (error) {
     console.error(error);
     res.status(500).json({});
+  }
+});
+
+// 記事更新
+router.put("/:id", async (req, res) => {
+  try {
+    const user_id = 1; // 仮
+    const article_id = req.params.id;
+    const { title, content } = req.body;
+
+    const article = await articleService.updateArticle(
+      user_id,
+      article_id,
+      title,
+      content,
+    );
+
+    res.status(200).json(article);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server error" });
+  }
+});
+
+// 記事削除
+router.delete("/:id", async (req, res) => {
+  try {
+    const user_id = 1; // 仮
+    const article_id = req.params.id;
+
+    await articleService.deleteArticle(user_id, article_id);
+
+    res.status(200).json({ message: "deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server error" });
   }
 });
 
