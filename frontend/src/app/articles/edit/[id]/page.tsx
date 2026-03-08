@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Article } from "../../types/Article/Article";
+import { Article } from "@/types/Article/Article";
 import Link from "next/link";
 
 export default function EditArticle({ params }: { params: { id: string } }) {

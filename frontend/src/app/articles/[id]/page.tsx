@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Article } from "../types/Article/Article";
+import { Article } from "@/types/Article/Article";
 import Link from "next/link";
 
 export default function ArticleDetail({ params }: { params: { id: string } }) {

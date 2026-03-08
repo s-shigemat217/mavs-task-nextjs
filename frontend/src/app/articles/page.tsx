@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Article } from "../types/Article/Article";
+import { Article } from "@/types/Article/Article";
 import Link from "next/link";
 
 export default function ArticlesPage() {
@@ -25,18 +25,18 @@ export default function ArticlesPage() {
       });
   }, []);
 
-  const deleteArticle = async (id: string) => {
+  const deleteArticle = async (id: number) => {
+    // 削除の確認ダイアログを表示し、ユーザーがキャンセルした場合は処理を中断する
     if (!confirm("削除しますか？")) return;
-
-    await fetch(`http://localhost:3001/articles/${id}`, {
+    // API に DELETE リクエストを送信して記事を削除する
+    const res = await fetch(`http://localhost:3001/articles/${id}`, {
       method: "DELETE",
     });
-
+    // レスポンスが正常かどうかをチェックし、異常な場合はエラーメッセージを表示して処理を中断する
     if (!res.ok) {
       alert("記事の削除に失敗しました。");
       return;
     }
-
     // 削除が成功したら記事一覧を更新する
     setArticles((prev) => prev.filter((article) => article.id !== id));
   };
