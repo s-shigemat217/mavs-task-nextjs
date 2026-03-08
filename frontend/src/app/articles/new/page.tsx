@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function NewArticle() {
   const router = useRouter();
@@ -23,24 +24,29 @@ export default function NewArticle() {
   return (
     <div>
       <h1>記事作成</h1>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          createArticle();
+        }}
+      >
+        <input
+          placeholder="タイトル"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
-      <input
-        placeholder="タイトル"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+        <textarea
+          placeholder="本文"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
 
-      <br />
+        <br />
 
-      <textarea
-        placeholder="本文"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
-
-      <br />
-
-      <button onClick={createArticle}>作成</button>
+        <button onClick={createArticle}>作成</button>
+      </form>
+      <Link href="/articles">記事一覧へ</Link>
     </div>
   );
 }

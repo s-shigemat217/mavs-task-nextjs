@@ -1,8 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Article } from "../../types/Article/Article";
+import Link from "next/link";
 
-export default function EditArticle({ params }) {
+export default function EditArticle({ params }: { params: { id: string } }) {
   // router.push() を使うために useRouter を呼び出す
   const router = useRouter();
 
@@ -14,7 +16,7 @@ export default function EditArticle({ params }) {
   useEffect(() => {
     fetch(`http://localhost:3001/articles/${params.id}`)
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: Article) => {
         setTitle(data.title);
         setContent(data.content);
       });
@@ -37,16 +39,20 @@ export default function EditArticle({ params }) {
   return (
     <div>
       <h1>記事編集</h1>
-
-      <input value={title} onChange={(e) => setTitle(e.target.value)} />
-
-      <br />
-
-      <textarea value={content} onChange={(e) => setContent(e.target.value)} />
-
-      <br />
-
-      <button onClick={updateArticle}>更新</button>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          updateArticle();
+        }}
+      >
+        <input value={title} onChange={(e) => setTitle(e.target.value)} />
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+        <button type="submit">更新</button>
+      </form>
+      <Link href="/articles">記事一覧へ</Link>
     </div>
   );
 }
