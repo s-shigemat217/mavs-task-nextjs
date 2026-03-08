@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Article } from "@/types/Article/Article";
 import Link from "next/link";
+import styles from "../../articles.module.css";
 
 export default function EditArticle({ params }: { params: { id: string } }) {
   // router.push() を使うために useRouter を呼び出す
@@ -37,22 +38,46 @@ export default function EditArticle({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div>
-      <h1>記事編集</h1>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          updateArticle();
-        }}
-      >
-        <input value={title} onChange={(e) => setTitle(e.target.value)} />
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <button type="submit">更新</button>
-      </form>
-      <Link href="/articles">記事一覧へ</Link>
-    </div>
+    <main className={styles.page}>
+      <section className={styles.panel}>
+        <h1 className={styles.title}>記事編集</h1>
+        <form
+          className={styles.form}
+          onSubmit={(e) => {
+            e.preventDefault();
+            updateArticle();
+          }}
+        >
+          <div className={styles.field}>
+            <label htmlFor="edit-title" className={styles.label}>
+              タイトル
+            </label>
+            <input
+              id="edit-title"
+              className={styles.input}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className={styles.field}>
+            <label htmlFor="edit-content" className={styles.label}>
+              本文
+            </label>
+            <textarea
+              id="edit-content"
+              className={styles.textarea}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+          </div>
+          <button type="submit" className={`${styles.button} ${styles.buttonPrimary}`}>
+            更新
+          </button>
+        </form>
+        <Link href="/articles" className={styles.metaLink}>
+          記事一覧へ戻る
+        </Link>
+      </section>
+    </main>
   );
 }

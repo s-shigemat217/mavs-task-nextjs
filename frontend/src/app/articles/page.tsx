@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Article } from "@/types/Article/Article";
 import Link from "next/link";
+import styles from "./articles.module.css";
 
 export default function ArticlesPage() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -42,18 +43,50 @@ export default function ArticlesPage() {
   };
 
   return (
-    <div>
-      <h1>記事一覧</h1>
-
-      {articles.map((article) => (
-        <div key={article.id}>
-          <Link href={`/articles/${article.id}`}>{article.title}</Link>
-          <Link href={`/articles/edit/${article.id}`}>編集</Link>
-          <button onClick={() => deleteArticle(article.id)}>削除</button>
+    <main className={styles.page}>
+      <section className={styles.panel}>
+        <div className={styles.headerRow}>
+          <h1 className={styles.title}>記事一覧</h1>
+          <Link
+            href="/articles/new"
+            className={`${styles.button} ${styles.buttonPrimary}`}
+          >
+            新規作成
+          </Link>
         </div>
-      ))}
 
-      <Link href="/articles/new">記事作成</Link>
-    </div>
+        {articles.length === 0 ? (
+          <p className={styles.empty}>記事がありません。新規作成してください。</p>
+        ) : (
+          <div className={styles.articleList}>
+            {articles.map((article) => (
+              <article key={article.id} className={styles.articleItem}>
+                <Link
+                  href={`/articles/${article.id}`}
+                  className={styles.articleLink}
+                >
+                  {article.title}
+                </Link>
+                <div className={styles.actions}>
+                  <Link
+                    href={`/articles/edit/${article.id}`}
+                    className={styles.button}
+                  >
+                    編集
+                  </Link>
+                  <button
+                    type="button"
+                    className={`${styles.button} ${styles.buttonDanger}`}
+                    onClick={() => deleteArticle(article.id)}
+                  >
+                    削除
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+    </main>
   );
 }

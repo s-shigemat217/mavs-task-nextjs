@@ -1,8 +1,8 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { LoginRequest } from "@/app/types/Login/LoginRequest";
-import { LoginResponse } from "@/app/types/Login/LoginResponse";
-import { useLoginData } from "@/app/hooks/useLoginData";
+import { LoginRequest } from "@/types/Login/LoginRequest";
+import { LoginResponse } from "@/types/Login/LoginResponse";
+import { useLoginData } from "@/hooks/useLoginData";
 import { useRouter } from "next/navigation";
 import styles from "./loginForm.module.css";
 
@@ -12,7 +12,6 @@ export default function LoginForm() {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
 		reset,
 	} = useForm<LoginRequest>();
 	const onSubmit = handleSubmit(async (request: LoginRequest) => {
@@ -39,14 +38,29 @@ export default function LoginForm() {
 		}
 	});
 	return (
-		<form onSubmit={onSubmit}>
-			<input className={styles.loginForm_input} {...register("email")} />
+		<form onSubmit={onSubmit} className={styles.loginForm}>
+			<label htmlFor="login-email" className={styles.loginForm_label}>
+				メールアドレス
+			</label>
 			<input
+				id="login-email"
 				className={styles.loginForm_input}
+				placeholder="you@example.com"
+				autoComplete="email"
+				{...register("email")}
+			/>
+			<label htmlFor="login-password" className={styles.loginForm_label}>
+				パスワード
+			</label>
+			<input
+				id="login-password"
+				className={styles.loginForm_input}
+				placeholder="password"
+				autoComplete="current-password"
 				{...register("password")}
 				type="password"
 			/>
-			<button>送信</button>
+			<button className={styles.loginForm_button}>送信</button>
 		</form>
 	);
 }

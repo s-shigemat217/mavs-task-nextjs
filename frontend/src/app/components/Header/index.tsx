@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import styles from "./header.module.css";
-import { useLoginData } from "@/app/hooks/useLoginData";
+import { useLoginData } from "@/hooks/useLoginData";
 
 export default function Header() {
 	const router = useRouter();
@@ -12,29 +12,31 @@ export default function Header() {
 		router.push("/");
 	};
 	return (
-		<div className={styles.header}>
+		<header className={styles.header}>
 			<h1 className={styles.header_logo} onClick={() => router.push("/")}>
-				メモアプリ
+				ToDo Notes
 			</h1>
-			<div>
+			<div className={styles.header_right}>
 				{loginData && (
-					<div>
-						<p>ようこそ！</p>
-						<p>{loginData?.email}さん</p>
+					<div className={styles.header_welcome}>
+						<p className={styles.header_welcomeLabel}>ようこそ</p>
+						<p>{loginData?.email} さん</p>
 					</div>
 				)}
 
 				{loginData ? (
-					<button onClick={logout}>ログアウト</button>
+					<button className={styles.header_action} onClick={logout}>
+						ログアウト
+					</button>
 				) : (
 					<button
-						className={styles.header_button}
+						className={styles.header_action}
 						onClick={() => router.push("/signin")}
 					>
 						サインイン
 					</button>
 				)}
 			</div>
-		</div>
+		</header>
 	);
 }
