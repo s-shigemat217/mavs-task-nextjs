@@ -5,7 +5,7 @@ const { Articles } = db;
 // クラス
 class ArticleService {
   /**
-   * 記事一覧取得
+   * メモ一覧取得
    * @param user_id
    * @return ランダム値
    */
@@ -21,7 +21,7 @@ class ArticleService {
   }
 
   /**
-   * 記事情報取得
+   * メモ情報取得
    * @param user_id
    * @return ランダム値
    */
@@ -36,7 +36,7 @@ class ArticleService {
     return article;
   }
 
-  /// 記事新規登録
+  /// メモ新規登録
   async createArticle(user_id, title, content) {
     const article = await Articles.create({
       title: title,
@@ -47,7 +47,7 @@ class ArticleService {
     return article;
   }
 
-  // 記事更新
+  // メモ更新
   async updateArticle(user_id, article_id, title, content) {
     await Articles.update(
       {
@@ -70,7 +70,7 @@ class ArticleService {
     });
   }
 
-  // 記事削除
+  // メモ削除
   async deleteArticle(user_id, article_id) {
     await Articles.destroy({
       where: {

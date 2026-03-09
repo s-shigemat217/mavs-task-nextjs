@@ -13,7 +13,7 @@ export default function EditArticle({ params }: { params: { id: string } }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  // コンポーネントがマウントされたときに記事のデータを取得してフォームにセットする
+  // コンポーネントがマウントされたときにメモのデータを取得してフォームにセットする
   useEffect(() => {
     fetch(`http://localhost:3001/articles/${params.id}`)
       .then((res) => res.json())
@@ -33,14 +33,14 @@ export default function EditArticle({ params }: { params: { id: string } }) {
       body: JSON.stringify({ title, content }),
     });
 
-    // 更新が成功したら記事一覧ページに遷移する
+    // 更新が成功したらメモ一覧ページに遷移する
     router.push("/articles");
   };
 
   return (
     <main className={styles.page}>
       <section className={styles.panel}>
-        <h1 className={styles.title}>記事編集</h1>
+        <h1 className={styles.title}>メモ編集</h1>
         <form
           className={styles.form}
           onSubmit={(e) => {
@@ -70,12 +70,15 @@ export default function EditArticle({ params }: { params: { id: string } }) {
               onChange={(e) => setContent(e.target.value)}
             />
           </div>
-          <button type="submit" className={`${styles.button} ${styles.buttonPrimary}`}>
+          <button
+            type="submit"
+            className={`${styles.button} ${styles.buttonPrimary}`}
+          >
             更新
           </button>
         </form>
         <Link href="/articles" className={styles.metaLink}>
-          記事一覧へ戻る
+          メモ一覧へ戻る
         </Link>
       </section>
     </main>

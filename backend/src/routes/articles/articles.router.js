@@ -7,7 +7,7 @@ const router = express.Router();
 const articleService = new ArticleService();
 
 /**
- * 記事一覧取得
+ * メモ一覧取得
  */
 router.get("/", async (req, res) => {
   try {
@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// 記事情報取得
+// メモ情報取得
 router.get("/:id", async (req, res) => {
   try {
     // const user_id = req.query.user_id;
@@ -55,7 +55,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// 記事更新
+// メモ更新
 router.put("/:id", async (req, res) => {
   try {
     const user_id = 1; // 仮
@@ -76,7 +76,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// 記事削除
+// メモ削除
 router.delete("/:id", async (req, res) => {
   try {
     const user_id = 1; // 仮

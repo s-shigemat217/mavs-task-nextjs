@@ -34,7 +34,7 @@ export default function ArticleDetail({ params }: { params: { id: string } }) {
         </div>
         <p className={styles.content}>{article.content}</p>
         <Link href="/articles" className={styles.metaLink}>
-          記事一覧へ戻る
+          メモ一覧へ戻る
         </Link>
       </section>
     </main>

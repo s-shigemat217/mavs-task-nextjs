@@ -25,7 +25,7 @@ export default function NewArticle() {
   return (
     <main className={styles.page}>
       <section className={styles.panel}>
-        <h1 className={styles.title}>記事作成</h1>
+        <h1 className={styles.title}>メモ作成</h1>
         <form
           className={styles.form}
           onSubmit={(e) => {
@@ -59,12 +59,15 @@ export default function NewArticle() {
             />
           </div>
 
-          <button type="submit" className={`${styles.button} ${styles.buttonPrimary}`}>
+          <button
+            type="submit"
+            className={`${styles.button} ${styles.buttonPrimary}`}
+          >
             作成
           </button>
         </form>
         <Link href="/articles" className={styles.metaLink}>
-          記事一覧へ戻る
+          メモ一覧へ戻る
         </Link>
       </section>
     </main>
