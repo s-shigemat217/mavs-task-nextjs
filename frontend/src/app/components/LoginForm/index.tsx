@@ -13,7 +13,11 @@ export default function LoginForm() {
 		register,
 		handleSubmit,
 		reset,
+		formState: { errors },
 	} = useForm<LoginRequest>();
+	const onInvalid = () => {
+		alert("メールアドレスとパスワードを入力してください。");
+	};
 	const onSubmit = handleSubmit(async (request: LoginRequest) => {
 		const response = await fetch(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/signin`,
@@ -36,7 +40,7 @@ export default function LoginForm() {
 		} else {
 			reset();
 		}
-	});
+	}, onInvalid);
 	return (
 		<form onSubmit={onSubmit} className={styles.loginForm}>
 			<label htmlFor="login-email" className={styles.loginForm_label}>
@@ -47,8 +51,11 @@ export default function LoginForm() {
 				className={styles.loginForm_input}
 				placeholder="you@example.com"
 				autoComplete="email"
-				{...register("email")}
+				{...register("email", { required: true })}
+				aria-invalid={errors.email ? "true" : "false"}
+				type="email"
 			/>
+			{errors.email && <p className={styles.loginForm_error}>メールアドレスは必須です。</p>}
 			<label htmlFor="login-password" className={styles.loginForm_label}>
 				パスワード
 			</label>
@@ -57,9 +64,11 @@ export default function LoginForm() {
 				className={styles.loginForm_input}
 				placeholder="password"
 				autoComplete="current-password"
-				{...register("password")}
+				{...register("password", { required: true })}
+				aria-invalid={errors.password ? "true" : "false"}
 				type="password"
 			/>
+			{errors.password && <p className={styles.loginForm_error}>パスワードは必須です。</p>}
 			<button className={styles.loginForm_button}>送信</button>
 		</form>
 	);
