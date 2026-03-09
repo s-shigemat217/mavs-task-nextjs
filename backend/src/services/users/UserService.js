@@ -1,11 +1,21 @@
 // import nanoid from 'nanoid';
-import db from '../../models/index.js';
-import AuthService from '../auth/AuthService.js';
+import db from "../../models/index.js";
+import AuthService from "../auth/AuthService.js";
 
 const authService = new AuthService();
+const { Users } = db;
 
 // クラス
 class UserService {
+  // ユーザーデータを返却形式に整形する
+  normalizeUserResponse(row) {
+    return {
+      id: row.dataValues.id,
+      name: row.dataValues.name,
+      email: row.dataValues.email,
+    };
+  }
+
   /**
    * ユーザー情報取得
    * @param ユーザーID
@@ -13,15 +23,15 @@ class UserService {
    */
   async getUser(user_id) {
     // ユーザーIDをキーにユーザー情報を取得する
-    const rows = await db.Users.findOne({ where: { id: user_id } });
-    console.log(rows.dataValues);
+    const rows = await Users.findOne({ where: { id: user_id } });
+    // データが存在しない場合はnullを返却する
+    if (!rows) {
+      return null;
+    }
+
+    console.log(rows.dataValues);// デバッグ用
     // 取得したデータを返却形式に整形して格納し返却する
-    const resData = {
-      id: rows.dataValues.id,
-      name: rows.dataValues.name,
-      email: rows.dataValues.email,
-    };
-    return resData;
+    return this.normalizeUserResponse(rows);
   }
   /**
    * ユーザー情報検索
@@ -49,21 +59,36 @@ class UserService {
     }
 
     // 検索実行
-    const rows = await db.Users.findAll({ where });
+    const rows = await Users.findAll({ where });
 
     // 取得したデータを返却形式に整形して格納し返却する
-    const resDataList = [];
-    for (const row of rows) {
-      const resData = {
-        id: row.dataValues.id,
-        name: row.dataValues.name,
-        email: row.dataValues.email,
-      };
-      // 返却用リストへ格納する
-      resDataList.push(resData);
+    return rows.map((row) => this.normalizeUserResponse(row));
+  }
+
+  // メールアドレスをキーにユーザー情報を取得する
+  async findUserByEmail(email) {
+    const user = await Users.findOne({
+      where: { email },
+    });
+
+    if (!user) {
+      return null;
     }
 
-    return resDataList;
+    return this.normalizeUserResponse(user);
+  }
+
+  // ユーザー登録
+  async registerUser(name, email, password) {
+    const hashPassword = authService.hashSha256(password);
+
+    const user = await Users.create({
+      name,
+      email,
+      password: hashPassword,
+    });
+
+    return this.normalizeUserResponse(user);
   }
 }
 
